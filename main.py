@@ -36,17 +36,17 @@ class Car:
         other_car_volume = other.length * other.width * other.width
         return car_volume < other_car_volume
     
-    def __gt__(self, other: "Car") ->bool:
+    def __gt__(self, other: "Car") -> bool:
         car_volume = self.length * self.width * self.length
         other_car_volume = other.length * other.width * other.width
         return car_volume > other_car_volume
 
-    def __eq__(self, other: "Car") ->bool:
+    def __eq__(self, other: "Car") -> bool:
         car_volume = self.length * self.width * self.length
         other_car_volume = other.length * other.width * other.width
         return car_volume == other_car_volume
     
-    def __ne__(self, other: "Car") ->bool:
+    def __ne__(self, other: "Car") -> bool:
         car_volume = self.length * self.width * self.length
         other_car_volume = other.length * other.width * other.width
         return car_volume != other_car_volume
