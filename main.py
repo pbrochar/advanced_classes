@@ -1,9 +1,6 @@
 import time
-import sys
 from typing import Optional
-
-class OutOfGazError(Exception):
-    pass
+from error import OutOfGazError, TooMuchFuelError
 
 
 class Car:
@@ -60,6 +57,16 @@ class Car:
             raise OutOfGazError("No Gaz")
         time.sleep(move_time)
 
+    def put_fuel(self, quantity: Optional[int] = None) -> None:
+        if quantity is None:
+            self.fuel_quantity = self.tank_size
+        elif quantity < 0:
+            raise ValueError("fuel_quantity can't be less than 0.")
+        elif self.fuel_quantity + quantity <= self.tank_size:
+            self.fuel_quantity += quantity
+        else:
+            self.fuel_quantity = self.tank_size
+            raise TooMuchFuelError("fuel_quantity can\'t be greater than tank_size")
  
 if __name__ == "__main__":
     #try:
@@ -76,3 +83,10 @@ if __name__ == "__main__":
     print(voiture > tuture)
     print(tuture == voiture)
     print(voiture != tuture)
+    try:
+        voiture.put_fuel(5)
+    except ValueError as e:
+        print(f"Error: {e}")
+    except TooMuchFuelError as e:
+        print(f"Error: {e}")
+        
