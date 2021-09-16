@@ -30,7 +30,27 @@ class Car:
         if self.average_consumption <= 0:
             raise ValueError('average_consumption can\'t be less than or equal to 0.')
         self.fuel_quantity = tank_size
-        
+    
+    def __lt__(self, other: "Car") -> bool:
+        car_volume = self.length * self.width * self.length
+        other_car_volume = other.length * other.width * other.width
+        return car_volume < other_car_volume
+    
+    def __gt__(self, other: "Car") ->bool:
+        car_volume = self.length * self.width * self.length
+        other_car_volume = other.length * other.width * other.width
+        return car_volume > other_car_volume
+
+    def __eq__(self, other: "Car") ->bool:
+        car_volume = self.length * self.width * self.length
+        other_car_volume = other.length * other.width * other.width
+        return car_volume == other_car_volume
+    
+    def __ne__(self, other: "Car") ->bool:
+        car_volume = self.length * self.width * self.length
+        other_car_volume = other.length * other.width * other.width
+        return car_volume != other_car_volume
+    
     def move_on(self, duration: Optional[int] = None) -> None:
         maximum_move_time = self.fuel_quantity / self.average_consumption
         if duration is None:
@@ -44,13 +64,17 @@ class Car:
 
  
 if __name__ == "__main__":
-    try:
-        tuture = Car("Clio", "tuture", 10, 10, 10, 10, 100, 100, 10)
-    except ValueError as e:
-        print(f"Error: {e}")
-        sys.exit(0)
-    try:
-        tuture.move_on(5)
-    except OutOfGazError as e:
-        print(f"Error: {e}")
-        
+    #try:
+    tuture = Car("Clio", "tuture", 10, 10, 10, 10, 100, 100, 10)
+    # except ValueError as e:
+    #     print(f"Error: {e}")
+    #     sys.exit(0)
+    # try:
+    #     tuture.move_on(5)
+    # except OutOfGazError as e:
+    #     print(f"Error: {e}")
+    voiture = Car("Multipla", "MoiMocheEtMechant", 15, 20, 20, 20, 100, 100, 10)
+    print(tuture < voiture)
+    print(voiture > tuture)
+    print(tuture == voiture)
+    print(voiture != tuture)
