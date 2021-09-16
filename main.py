@@ -29,8 +29,20 @@ class Car:
         self.average_consumption = average_consumption
         if self.average_consumption <= 0:
             raise ValueError('average_consumption can\'t be less than or equal to 0.')
-        self.fuel_quantity = tank_size
-    
+        self._fuel_quantity = tank_size
+
+    def __iter__(self):
+        yield 'model', self.model
+        yield 'name', self.name
+        yield 'weight', self.weight
+        yield 'lenght', self.length
+        yield 'height', self.height
+        yield 'width', self.width
+        yield 'maximum_speed', self.maximum_speed
+        yield 'tank_size', self.tank_size
+        yield 'average_consumption', self.average_consumption
+        yield 'gas', self.gas
+
     def __lt__(self, other: "Car") -> bool:
         return self._get_volume() < other._get_volume()
     
@@ -39,7 +51,7 @@ class Car:
 
     def __eq__(self, other: "Car") -> bool:
         return self._get_volume() == other._get_volume()
-    
+
     def __ne__(self, other: "Car") -> bool:
         return self._get_volume() != other._get_volume()
     
@@ -59,15 +71,26 @@ class Car:
 
     def put_fuel(self, quantity: Optional[int] = None) -> None:
         if quantity is None:
-            self.fuel_quantity = self.tank_size
+            self.gas = self.tank_size
         elif quantity < 0:
-            raise ValueError("fuel_quantity can't be less than 0.")
-        elif self.fuel_quantity + quantity <= self.tank_size:
-            self.fuel_quantity += quantity
+            raise ValueError("you can't add a negative value.")
         else:
-            self.fuel_quantity = self.tank_size
+            self.gas += quantity
+        
+    @property
+    def gas(self) -> int:
+        return self._fuel_quantity
+
+    @gas.setter
+    def gas(self, quantity: int) -> None:
+        if quantity < 0:
+            raise ValueError("gas can't be less than 0.")
+        elif quantity > self.tank_size:
+            self._fuel_quantity = self.tank_size
             raise TooMuchFuelError("fuel_quantity can\'t be greater than tank_size")
- 
+        else:
+            self._fuel_quantity = quantity
+
 if __name__ == "__main__":
     #try:
     tuture = Car("Clio", "tuture", 10, 10, 10, 10, 100, 100, 10)
@@ -84,9 +107,10 @@ if __name__ == "__main__":
     print(tuture == voiture)
     print(voiture != tuture)
     try:
-        voiture.put_fuel(5)
+        voiture.put_fuel(-5)
     except ValueError as e:
         print(f"Error: {e}")
     except TooMuchFuelError as e:
         print(f"Error: {e}")
-        
+    print(voiture.gas)
+    print(dict(voiture))
