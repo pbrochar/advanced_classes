@@ -7,23 +7,26 @@ class OutOfGazError(Exception):
 
 
 class Car:
-    def __init__ (self,
-                  model: str,
-                  name: str,
-                  weight: int,
-                  length: int,
-                  height: int,
-                  width: int,
-                  maximum_speed: int,
-                  tank_size: int,
-                  average_consumption: int
-                  ):
+    def __init__ (
+            self,
+            model: str,
+            name: str,
+            weight: int,
+            length: int,
+            height: int,
+            width: int,
+            maximum_speed: int,
+            tank_size: int,
+            average_consumption: int,
+    ):
         self.model = model
         self.name = name
+        
         self.weight = weight
         self.length = length
         self.height = height
         self.width = width
+        
         self.maximum_speed = maximum_speed
         self.tank_size = tank_size
         self.average_consumption = average_consumption
@@ -32,24 +35,19 @@ class Car:
         self.fuel_quantity = tank_size
     
     def __lt__(self, other: "Car") -> bool:
-        car_volume = self.length * self.width * self.length
-        other_car_volume = other.length * other.width * other.width
-        return car_volume < other_car_volume
+        return self._get_volume() < other._get_volume()
     
     def __gt__(self, other: "Car") -> bool:
-        car_volume = self.length * self.width * self.length
-        other_car_volume = other.length * other.width * other.width
-        return car_volume > other_car_volume
+        return self._get_volume() > other._get_volume()
 
     def __eq__(self, other: "Car") -> bool:
-        car_volume = self.length * self.width * self.length
-        other_car_volume = other.length * other.width * other.width
-        return car_volume == other_car_volume
+        return self._get_volume() == other._get_volume()
     
     def __ne__(self, other: "Car") -> bool:
-        car_volume = self.length * self.width * self.length
-        other_car_volume = other.length * other.width * other.width
-        return car_volume != other_car_volume
+        return self._get_volume() != other._get_volume()
+    
+    def _get_volume(self) -> int:
+        return self.length * self.width * self.length
     
     def move_on(self, duration: Optional[int] = None) -> None:
         maximum_move_time = self.fuel_quantity / self.average_consumption
