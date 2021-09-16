@@ -32,6 +32,9 @@ class Car:
         self._fuel_quantity = tank_size
 
     def __iter__(self):
+        """
+        Allows to create a dictionary from the dict() function.
+        """
         yield 'model', self.model
         yield 'name', self.name
         yield 'weight', self.weight
@@ -59,7 +62,14 @@ class Car:
         return self.length * self.width * self.length
     
     def move_on(self, duration: Optional[int] = None) -> None:
-        maximum_move_time = self.fuel_quantity / self.average_consumption
+        """
+        This function allows the car to move forward.
+        If the time is not specified, the car will move forward until the tank is empty.
+        The specified time cannot be greater than the capacity of the car, 
+        in this case it will move forward until the tank is empty and an exception OutOfGazError will be raise.
+        """
+        
+        maximum_move_time = self.gas / self.average_consumption
         if duration is None:
             move_time = maximum_move_time
         elif duration < maximum_move_time:
@@ -70,6 +80,11 @@ class Car:
         time.sleep(move_time)
 
     def put_fuel(self, quantity: Optional[int] = None) -> None:
+        """
+        This function allows to add a quantity of fuel in the car.
+        You can't add a negative amount.
+        If no amount is specified, then the tank will be filled up completely.
+        """
         if quantity is None:
             self.gas = self.tank_size
         elif quantity < 0:
