@@ -15,6 +15,10 @@ class Race:
             yield dict(car)
 
     def _print_results(self, results: list[tuple], grading_unit: str) -> None:
+        """
+        The result list is divided into two lists: the list of ranked cars and the list of unranked cars.
+        Depending on the grading_unit, the ranked list is sorted by time (grading_unit = 's') or by distance (grading_unit = 'm')
+        """
         rank = 1
         ranked, unranked = [], []
         for result in results:
@@ -40,6 +44,12 @@ class Race:
             car.put_fuel()
 
     async def run(self, distance: Optional[int] = None) -> None:
+        """
+        Method to start the race with all the cars.
+        If no distance is specified then the race will be run until the fuel is exhausted.
+        If there is no precise distance then the ranking will be done on the distance covered (grading_unit = 'm'), otherwise, on the time (grading_unit = 's')
+        The results are then put in the form of a list[tuple] containing the race time and the corresponding car
+        """
         move_times = await asyncio.gather(*[
             car.move_on(duration=None if distance is None else distance / car.maximum_speed)
             for car in self.cars     
